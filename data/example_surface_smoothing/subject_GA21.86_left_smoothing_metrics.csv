@@ -1,0 +1,6 @@
+N,noise_removed_pct,area_pct,chamfer_mm,file
+0,0.0,0.0,0.0,subject_GA21.86_left_sp0.surf.gii
+10,29.65,-1.572,0.0806,subject_GA21.86_left_sp10.surf.gii
+20,38.41,-2.748,0.1384,subject_GA21.86_left_sp20.surf.gii
+30,43.4,-3.758,0.1835,subject_GA21.86_left_sp30.surf.gii
+40,46.82,-4.67,0.2215,subject_GA21.86_left_sp40.surf.gii

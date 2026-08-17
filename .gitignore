@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Generated meshes and intermediates
+*.mesh
+*.vtu
+*.vtk
+*.stl
+*.pts
+*.elem
+*.lon
+_work_*/
+*_output/
+
+# macOS
+.DS_Store

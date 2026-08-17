@@ -1,0 +1,92 @@
+# ---------------------------------------------------------------------------
+# CORTET dependencies, pinned to the environment that produced the published
+# results were produced on: a Slurm HPC cluster (King's College London CREATE).
+#
+#     pip install -r requirements.txt
+#     pip install --no-deps pymeshlab==2025.7        # see the note below
+#
+# Install exactly these to reproduce the paper. They are pinned rather than
+# floated because mesh generation is sensitive to the toolchain in ways that are
+# easy to miss; the reproducibility note at the bottom gives the measured size of
+# that sensitivity.
+# ---------------------------------------------------------------------------
+
+# Core
+numpy==1.24.4
+scipy==1.9.1
+nibabel==5.3.3
+
+# Mesh generation (Stage 1). Must be built against CGAL 5.6.1 headers.
+pygalmesh==0.10.7
+meshio==5.3.5
+trimesh==4.11.2
+
+# Quality optimisation (Stage 3)
+gmsh==4.15.1
+
+# Post-mesh boundary smoothing (optional; the surface-preserving method)
+# INSTALL SEPARATELY, WITH --no-deps:
+#     pip install --no-deps pymeshlab==2025.7
+# Without --no-deps it pulls numpy 2.x, which clobbers the numpy 1.24.4 pinned
+# above and breaks scipy 1.9. Its only real dependency is numpy.
+
+# TetGen comparison (optional; run/04 only)
+tetgen==0.8.2
+pyvista==0.46.5
+
+# ---------------------------------------------------------------------------
+# NOT INSTALLABLE BY PIP
+#
+#   CGAL 5.6.1     header-only. Download the release and put the headers on the
+#                  include path:
+#                    wget https://github.com/CGAL/cgal/releases/download/v5.6.1/CGAL-5.6.1.tar.xz
+#                    tar xf CGAL-5.6.1.tar.xz
+#                    cp -r CGAL-5.6.1/include/CGAL ~/.local/include/
+#                  CGAL 5.0.3 segfaults in the odt/lloyd/perturb optimisation
+#                  passes. Do not use it, and do not load a system CGAL module
+#                  that provides it.
+#
+#   meshtool       commit f40d370 (10 February 2026). Required by Stage 4 and by
+#                  every quality measurement.
+#                    git clone https://bitbucket.org/aneic/meshtool.git
+#                    cd meshtool && git checkout f40d370 && make
+#                  THE COMMIT MATTERS. A later build (HEAD, 25 May 2026) fails to
+#                  recover a mesh after post-mesh smoothing: q_max lands at 0.65
+#                  instead of 0.50, leaving elements above the solver-ready
+#                  threshold. Same code, same input, same parameters; only the
+#                  binary differs.
+#
+#   wb_command     Connectome Workbench. Needed for --method wb, and for the
+#                  surface resampling upstream of this pipeline.
+#
+# Reference environment: Python 3.9.13, g++ 11.4.0 (Ubuntu 22.04), Boost 1.83.0,
+# GMP 6.2.1, Eigen 3.4.0.
+#
+# Check an installation with:  python3 run/00_check_environment.py
+#
+# ---------------------------------------------------------------------------
+# REPRODUCIBILITY -- read before comparing digits
+#
+# The pipeline is deterministic: the same input on the same machine produces a
+# byte-identical mesh every time, verified by checksum.
+#
+# Across machines it is not, and pinning the Python packages above is NOT
+# sufficient to make it so. Measured, cluster against a workstation, same
+# subject, same h, same input surface, with the Python environment matched
+# package for package:
+#
+#     nodes    59,174  vs  59,174    identical
+#     tets    326,083  vs 326,101    18 elements, 0.0055%
+#     q_max     0.462  vs   0.481    both well inside the < 0.6 criterion
+#
+# The same vertices, joined slightly differently. Ruled out by direct test: the
+# numpy, scipy, trimesh, meshio and nibabel versions (the STL handed to CGAL was
+# byte-identical under both sets), the pygalmesh version, and the compiler. What
+# remained different was Boost (1.74 against 1.83) and the CPU. CGAL's optimisers
+# iterate in floating point and use Boost containers, so either can flip
+# tie-breaks among near-cospherical points.
+#
+# EXPECT THE SAME CONCLUSIONS, NOT THE SAME DIGITS. Every claim the paper makes
+# reproduced on the workstation: the quality ranges, and the collapse of the
+# solver-breaking tail to zero.
+# ---------------------------------------------------------------------------

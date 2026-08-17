@@ -1,0 +1,83 @@
+cff-version: 1.2.0
+message: "If you use CORTET, please cite the paper below."
+title: "CORTET: CORtical TETrahedral meshing"
+abstract: >-
+  An automated pipeline that turns an individual triangulated cortical surface into a
+  solver-ready tetrahedral mesh without manual repair, certifying the worst element
+  rather than the average. Part of Gen2020, a programme of work on the biomechanics of
+  fetal cortical folding at King's College London.
+keywords:
+  - tetrahedral mesh generation
+  - fetal brain
+  - cortical folding
+  - finite element method
+  - mesh quality
+  - dHCP
+  - Gen2020
+type: software
+license: MIT
+repository-code: "https://github.com/Davoodshahsavari1992/-CORTET-CORtical-TETrahedral-meshing-"
+authors:
+  - family-names: Shahsavari
+    given-names: Davood
+    email: davood.shahsavari@kcl.ac.uk
+    affiliation: >-
+      School of Biomedical Engineering & Imaging Sciences, and Centre for
+      Developmental Neurobiology, Institute of Psychiatry, Psychology &
+      Neuroscience, King's College London, London SE1 7EU, UK
+    # orcid: "https://orcid.org/0000-0000-0000-0000"   # <- add your ORCID iD here
+  - family-names: Grigorescu
+    given-names: Irina
+  - family-names: Xiao
+    given-names: Jiaxin
+  - family-names: Baena
+    given-names: Nashira
+  - family-names: Saboo
+    given-names: Aakash
+  - family-names: Masui
+    given-names: Saga N. B.
+  - family-names: Guo
+    given-names: Yourong
+  - family-names: Kyriakopoulou
+    given-names: Vanessa
+  - family-names: Uus
+    given-names: Alena
+  - family-names: Bishop
+    given-names: Martin J.
+  - family-names: Long
+    given-names: Katherine R.
+  - family-names: Robinson
+    given-names: Emma C.
+preferred-citation:
+  type: article
+  title: >-
+    CORTET: Robust generation of simulation-ready tetrahedral meshes of the fetal
+    cerebral cortex
+  status: submitted
+  notes: >-
+    Under review. Journal, year, volume and DOI to be filled in on acceptance.
+  authors:
+    - family-names: Shahsavari
+      given-names: Davood
+    - family-names: Grigorescu
+      given-names: Irina
+    - family-names: Xiao
+      given-names: Jiaxin
+    - family-names: Baena
+      given-names: Nashira
+    - family-names: Saboo
+      given-names: Aakash
+    - family-names: Masui
+      given-names: Saga N. B.
+    - family-names: Guo
+      given-names: Yourong
+    - family-names: Kyriakopoulou
+      given-names: Vanessa
+    - family-names: Uus
+      given-names: Alena
+    - family-names: Bishop
+      given-names: Martin J.
+    - family-names: Long
+      given-names: Katherine R.
+    - family-names: Robinson
+      given-names: Emma C.

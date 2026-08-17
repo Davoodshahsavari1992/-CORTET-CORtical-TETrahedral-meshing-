@@ -1,0 +1,6 @@
+study,variable,status,roughness,qmax,qbar,n_above,solver_ready
+cleaning,0.7 0.5,ok,0.13086,0.5,0.1346,0,yes
+cleaning,0.7 0.5 0.5,FAILED,,,,,
+cleaning,0.7 0.5 0.45,ok,0.12371,0.8803,0.1367,129,NO
+cleaning,0.7 0.5 0.4,ok,0.11779,0.8803,0.1356,198,NO
+cleaning,0.7 0.5 0.3,ok,0.117,0.8803,0.1355,205,NO

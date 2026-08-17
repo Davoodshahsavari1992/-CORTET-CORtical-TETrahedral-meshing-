@@ -1,0 +1,6 @@
+study,variable,status,roughness,qmax,qbar,n_above,solver_ready,applied_iterations
+cycles,0 (baseline),ok,0.19034,0.4838,0.1288,0,yes,
+cycles,1,ok,0.13086,0.5,0.1346,0,yes,5
+cycles,2,ok,0.12979,0.4984,0.1361,0,yes,5
+cycles,3,ok,0.129,0.4982,0.1369,0,yes,5
+cycles,5,ok,0.12956,0.4968,0.1397,0,yes,5

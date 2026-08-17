@@ -1,0 +1,10 @@
+subject,GA_weeks,h_mm,nodes,tets,qbar,qmax,status
+subject_GA21.86_left,21.86,0.4,194632,1101843,0.128,0.550,confirmed
+subject_GA21.86_left,21.86,0.6,59174,326083,0.129,0.462,confirmed
+subject_GA21.86_left,21.86,0.8,25722,137933,0.130,0.458,confirmed
+subject_GA28.00_left,28.00,0.4,458388,2612132,0.128,0.522,confirmed
+subject_GA28.00_left,28.00,0.6,139143,773954,0.128,0.504,confirmed
+subject_GA28.00_left,28.00,0.8,60114,326436,0.129,0.508,confirmed
+subject_GA33.86_left,33.86,0.4,955059,5419671,0.128,0.540,estimated_not_yet_independently_reconfirmed
+subject_GA33.86_left,33.86,0.6,290248,1604834,0.129,0.523,confirmed
+subject_GA33.86_left,33.86,0.8,125749,677789,0.129,0.516,confirmed
