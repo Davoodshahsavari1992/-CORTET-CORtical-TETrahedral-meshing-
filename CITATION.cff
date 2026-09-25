@@ -1,11 +1,21 @@
 cff-version: 1.2.0
 message: "If you use CORTET, please cite the paper below."
-title: "CORTET: CORtical TETrahedral meshing"
+title: "CORTET: Robust generation of simulation-ready tetrahedral meshes of the fetal cerebral cortex"
 abstract: >-
-  An automated pipeline that turns an individual triangulated cortical surface into a
-  solver-ready tetrahedral mesh without manual repair, certifying the worst element
-  rather than the average. Part of Gen2020, a programme of work on the biomechanics of
-  fetal cortical folding at King's College London.
+  Every human brain folds differently, and such natural variation confounds the search for
+  imaging biomarkers of neurodevelopmental disorders. Physics-based simulation can help
+  determine the causal mechanisms that underpin this variability. Yet every simulation must be
+  initiated from a volumetric mesh of the brain's interior, tetrahedral or hexahedral, and it is
+  the worst element in that mesh, not the average, that decides whether the simulation runs at
+  all. Building that mesh from fetal MRI currently requires labour-intensive manual
+  intervention. We therefore present CORTET (CORtical TETrahedral meshing): a fully automated
+  pipeline that converts a triangulated cortical surface into a solver-ready tetrahedral mesh
+  whose worst-element quality meets a strict quality target with no manual repair. By
+  benchmarking against a general-purpose tetrahedral mesher on the same input surfaces, we
+  isolate the pipeline's contribution from that of the input geometry, and we validate quality
+  across a cohort of nearly 200 fetal subjects spanning the folding period. A mesh taken
+  straight from the pipeline sustains a numerically stable morphoelastic folding simulation of a
+  real fetal subject.
 keywords:
   - tetrahedral mesh generation
   - fetal brain
@@ -61,6 +71,21 @@ preferred-citation:
   title: >-
     CORTET: Robust generation of simulation-ready tetrahedral meshes of the fetal
     cerebral cortex
+  abstract: >-
+    Every human brain folds differently, and such natural variation confounds the search for
+    imaging biomarkers of neurodevelopmental disorders. Physics-based simulation can help
+    determine the causal mechanisms that underpin this variability. Yet every simulation must be
+    initiated from a volumetric mesh of the brain's interior, tetrahedral or hexahedral, and it
+    is the worst element in that mesh, not the average, that decides whether the simulation runs
+    at all. Building that mesh from fetal MRI currently requires labour-intensive manual
+    intervention. We therefore present CORTET (CORtical TETrahedral meshing): a fully automated
+    pipeline that converts a triangulated cortical surface into a solver-ready tetrahedral mesh
+    whose worst-element quality meets a strict quality target with no manual repair. By
+    benchmarking against a general-purpose tetrahedral mesher on the same input surfaces, we
+    isolate the pipeline's contribution from that of the input geometry, and we validate quality
+    across a cohort of nearly 200 fetal subjects spanning the folding period. A mesh taken
+    straight from the pipeline sustains a numerically stable morphoelastic folding simulation of
+    a real fetal subject.
   status: in-press
   year: 2026
   conference:
