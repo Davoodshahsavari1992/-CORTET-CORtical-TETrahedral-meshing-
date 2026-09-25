@@ -1,5 +1,14 @@
 # CORTET: CORtical TETrahedral meshing
 
+[![arXiv](https://img.shields.io/badge/arXiv-2607.12157-b31b1b.svg)](https://arxiv.org/abs/2607.12157)
+[![MICCAI 2026 · CBM XXI](https://img.shields.io/badge/MICCAI%202026-CBM%20XXI-0072B2.svg)](https://cbm.mech.uwa.edu.au/CBM2026/)
+[![Licence: MIT](https://img.shields.io/badge/licence-MIT-2E7D32.svg)](LICENSE)
+
+![A fetal brain's surface mesh from MRI, and the volumetric mesh CORTET builds from it](docs/figures/cortet_overview.png)
+
+*From an individual cortical surface (left, with its triangles close up) to a solver-ready volumetric mesh
+(right, cut open; the close-up shows tetrahedra from the cut face, drawn slightly apart). Week-22 fetal brain,
+cell size `h = 0.6` mm.*
 
 An automated pipeline that turns an individual triangulated cortical surface into a solver-ready
 tetrahedral mesh, without manual repair. It was built for fetal cortical-folding simulation, where a
@@ -14,13 +23,42 @@ is the meshing infrastructure that work depends on.
 The design target is a worst-element quality of `q_max < 0.6` under `meshtool`'s `tet_qmetric_volume`
 measure, on which `0` is a regular tetrahedron and `1` a degenerate one.
 
-> **Status.** This code accompanies a manuscript currently under review — *CORTET: Robust generation
-> of simulation-ready tetrahedral meshes of the fetal cerebral cortex*. Journal, year and DOI go into
-> `CITATION.cff` on acceptance.
+> **Status.** Accepted at the MICCAI 2026 workshop *Computational Biomechanics for Medicine* (CBM XXI),
+> Strasbourg, 27 September 2026: *CORTET: Robust generation of simulation-ready tetrahedral meshes of the
+> fetal cerebral cortex*, preprint [arXiv:2607.12157](https://arxiv.org/abs/2607.12157). Please cite the
+> paper; `CITATION.cff` (or *Cite this repository* on GitHub) has the entry, and the proceedings DOI will
+> be added when it is issued.
 
 **`docs/PAPER_MAP.md` maps every claim the paper makes onto the file here that backs it**, and marks
 which numbers were re-measured and which were not. Start there if you are checking the work rather
 than running it.
+
+## At a glance
+
+![Real fetal brains meshed by CORTET, one per week from 21 to 38 weeks of gestation](docs/figures/cortet_weeks_21_to_38.gif)
+
+*The application. In the 17 weeks from 21 to 38 weeks of gestation, a smooth fetal brain becomes folded.
+Each frame is a CORTET mesh of a real fetal brain (dHCP), one brain per week, on one camera and one scale;
+different weeks are different fetuses.*
+
+**The worst element decides.** A single nearly flat element can halt an explicit solver, however good the
+average element is. Elements over the limit (`q > 0.6`) on the same week-22 surface:
+
+![Elements over the limit on the same week-22 surface: TetGen 41,023; the fill alone 369; CORTET 0](docs/figures/cortet_bad_elements.png)
+
+**CORTET finds them and fixes them.** The worst element left by the fill, nearly flat at `q = 0.765`, is
+reshaped to `q = 0.362` by moving its nodes. No element is deleted and the connectivity is unchanged.
+
+![The fill cut open and coloured by element quality, and its worst element before and after CORTET](docs/figures/cortet_worst_element.png)
+
+**Every brain, one setting.** Across 194 fetal brains from 21 to 38 weeks, 173,073 of 200,379,097 elements
+are over the limit after the fill alone, and none after CORTET; the worst element of every brain lies
+between 0.46 and 0.56 ([`results/pooled_hist.csv`](results/pooled_hist.csv),
+[`results/cohort_quality_194.csv`](results/cohort_quality_194.csv)).
+
+![Meshes from 21 to 38 weeks; pooled element quality of the 194 meshes; worst element of each brain](docs/figures/cortet_results.png)
+
+`docs/figures/README.md` records how each of these figures was made.
 
 ## What it does
 
@@ -40,13 +78,8 @@ The single control is the cell size `h`: the upper bound CGAL places on each tet
 circumradius and on the surface Delaunay ball radius, with facet distance `h/2`. The default is
 `h = 0.6` mm, the resolution at which the cohort results were produced.
 
-Two things sit outside that chain and are provided separately:
-
-- **Per-vertex field transfer.** Refinement replaces the input surface's vertices with a new node set,
-  so a field defined on the input surface (thickness, curvature, growth rate, labels) cannot be
-  carried across by index — doing so silently assigns the wrong value to every node. Transfer it
-  geometrically instead, with `cortet/fields/map_surface_fields_to_mesh.py`.
-- **Post-mesh boundary smoothing**, for solvers that resolve a growing free surface (see below).
+**Post-mesh boundary smoothing**, for solvers that resolve a growing free surface, sits outside that
+chain and is provided separately (see below).
 
 ## Layout
 
@@ -64,8 +97,6 @@ cortet/
   surface/                                  BEFORE meshing: prepare the input surface
     smooth_one_multi_N.py                   surface-preserving Laplacian smoothing sweep
   generation/generate_tetrahedral_mesh.py   Stages 1 to 6: surface in, solver-ready mesh out
-  fields/                                   AFTER meshing: carry surface fields onto the volume
-    map_surface_fields_to_mesh.py           barycentric transfer of thickness/growth/labels
   export/                                   AFTER meshing: hand the mesh to a different solver
     export_mesh_formats.py                  Abaqus, FEBio, FEniCS, VTK, Gmsh, CARP, via meshio
   tetgen/                                   the TetGen comparison workers
@@ -120,8 +151,7 @@ Two dependencies are **not** installable through pip and must be provided separa
 - **`wb_command`** (Connectome Workbench) for surface resampling and the Workbench smoothing method.
 
 `pygalmesh` must be built against the CGAL headers on your system. `docs/ENVIRONMENT.md` records the
-exact module environment used during development, on a Slurm-based HPC system. Those module names are
-site-specific and will differ on yours; the document also explains how to rediscover the correct set.
+exact versions used during development.
 
 > **Read `docs/ENVIRONMENT.md` before the first run.** `meshtool` can exit with status 0 and produce
 > empty or wrong output when run outside the correct environment, with no error pointing at the cause.
@@ -267,41 +297,6 @@ faithfully preserve that, giving you correct faces, correct node ordering, and a
 not in the convention the solver reads. Nothing errors. Stage 06 detects the incoming convention,
 reports it, and normalises before finalising.
 
-Two useful extras:
-
-```bash
-# carry thickness / growth / labels onto the volume mesh
-python3 run/06_export_braingrowth.py --mesh ... --out-dir ... \
-    --fields --gii sub-X_sp30.surf.gii --thickness sub-X_thickness.shape.gii
-
-# also write the mesh for a different solver
-python3 run/06_export_braingrowth.py --mesh ... --out-dir ... \
-    --also-export solver_ready/mesh.inp
-```
-
-The `--fields` path matters more than it looks: refinement discarded the input surface's vertices, so
-a per-vertex field carried across by index is wrong for **every** node, silently.
-
-### Running on a cluster, and bringing results back
-
-Every stage writes a small CSV summary alongside its output, and each script's docstring has a
-**WHAT TO SEND BACK** section naming exactly which files those are. They are kilobytes.
-
-```bash
-# on the cluster, after the runs
-cd <output root>
-tar czf cortet_results.tar.gz $(find . -name 'stage0*_*.csv' -o -name '*_displacement.csv')
-
-# from your machine
-scp <user>@<cluster>:<path>/cortet_results.tar.gz .
-```
-
-Send the console logs too — they carry the roughness and per-step quality that the CSVs summarise.
-
-**Do not transfer meshes or surfaces.** They are large, and they are dHCP-derived, so they stay
-wherever your data use agreement permits them to be. Nothing in this pipeline needs them moved: the
-CSVs and logs carry every number.
-
 ---
 
 ## Post-mesh boundary smoothing, and when you need it
@@ -392,14 +387,13 @@ each row. There is no separate experiment harness to run:
 | Section 4.4 | `run/05 --method wb` |
 
 Each stage appends a small CSV summary, so a batch is a loop over subjects and a concatenation of
-those files. The cluster submission scripts used for the published runs are site-specific and are
-not included; write the loop your scheduler expects.
+those files.
 
 ## Acknowledgements and upstream tools
 
 CORTET orchestrates established tools and claims no credit for them: CGAL (via `pygalmesh`), Gmsh,
 `meshtool`, TetGen, PyMeshLab, the Connectome Workbench, NiBabel, `meshio` and Trimesh. Each keeps
-its own licence — see `LICENSE`.
+its own licence — see `THIRD_PARTY.md`.
 
 The folding simulations this pipeline feeds use our own implementation of the BrainGrowth model of
 Wang et al. (2021), *The influence of biophysical parameters in a biomechanical model of cortical
@@ -419,7 +413,7 @@ King's College London | School of Biomedical Engineering & Imaging Sciences
 
 Part of the **Gen2020** fetal brain-folding programme, in the MeTrICS Lab (PI Dr Emma Robinson).
 
-The accompanying manuscript has twelve authors; the full list, in the order it appears there, is in
+The accompanying paper has thirteen authors; the full list, in the order it appears there, is in
 `CITATION.cff`. Please cite the paper rather than this repository alone — see *Status* at the top.
 
 Questions about running the pipeline, and bug reports, are best raised as GitHub issues so the
@@ -433,4 +427,4 @@ CORTET orchestrates external tools rather than including them, and each keeps it
 (via `pygalmesh`), Gmsh, `meshtool`, TetGen, PyMeshLab, the Connectome Workbench, `meshio`, NiBabel
 and Trimesh. You obtain those from their own distributors, under their own terms. If you plan to
 redistribute a bundle that includes them, check each one — the combined work may carry obligations
-this repository's own licence does not. `LICENSE` lists them.
+this repository's own licence does not. `THIRD_PARTY.md` lists them.

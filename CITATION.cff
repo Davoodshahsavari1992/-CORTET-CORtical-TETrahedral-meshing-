@@ -17,6 +17,7 @@ keywords:
 type: software
 license: MIT
 repository-code: "https://github.com/Davoodshahsavari1992/-CORTET-CORtical-TETrahedral-meshing-"
+url: "https://arxiv.org/abs/2607.12157"
 authors:
   - family-names: Shahsavari
     given-names: Davood
@@ -28,8 +29,12 @@ authors:
     # orcid: "https://orcid.org/0000-0000-0000-0000"   # <- add your ORCID iD here
   - family-names: Grigorescu
     given-names: Irina
+  - family-names: Long
+    given-names: Katherine R.
   - family-names: Xiao
     given-names: Jiaxin
+  - family-names: Liang
+    given-names: Kaili
   - family-names: Baena
     given-names: Nashira
   - family-names: Saboo
@@ -44,25 +49,39 @@ authors:
     given-names: Alena
   - family-names: Bishop
     given-names: Martin J.
-  - family-names: Long
-    given-names: Katherine R.
   - family-names: Robinson
     given-names: Emma C.
 preferred-citation:
-  type: article
+  type: conference-paper
   title: >-
     CORTET: Robust generation of simulation-ready tetrahedral meshes of the fetal
     cerebral cortex
-  status: submitted
+  status: in-press
+  year: 2026
+  conference:
+    name: "Computational Biomechanics for Medicine XXI (CBM XXI), a MICCAI 2026 workshop"
+    city: Strasbourg
+    country: FR
+    date-start: "2026-09-27"
+    date-end: "2026-09-27"
+  url: "https://arxiv.org/abs/2607.12157"
+  identifiers:
+    - type: other
+      value: "arXiv:2607.12157"
+      description: "arXiv preprint"
   notes: >-
-    Under review. Journal, year, volume and DOI to be filled in on acceptance.
+    Accepted at CBM XXI (MICCAI 2026). The proceedings DOI will be added when it is issued.
   authors:
     - family-names: Shahsavari
       given-names: Davood
     - family-names: Grigorescu
       given-names: Irina
+    - family-names: Long
+      given-names: Katherine R.
     - family-names: Xiao
       given-names: Jiaxin
+    - family-names: Liang
+      given-names: Kaili
     - family-names: Baena
       given-names: Nashira
     - family-names: Saboo
@@ -77,7 +96,5 @@ preferred-citation:
       given-names: Alena
     - family-names: Bishop
       given-names: Martin J.
-    - family-names: Long
-      given-names: Katherine R.
     - family-names: Robinson
       given-names: Emma C.

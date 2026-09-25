@@ -4,6 +4,13 @@ __pycache__/
 .venv/
 venv/
 
+# Surfaces, images and meshes: dHCP-derived or generated, never committed
+*.gii
+*.nii
+*.nii.gz
+*.msh
+*.inp
+*.npz
 # Generated meshes and intermediates
 *.mesh
 *.vtu
