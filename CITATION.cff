@@ -69,13 +69,19 @@ preferred-citation:
     country: FR
     date-start: "2026-09-27"
     date-end: "2026-09-27"
+  collection-title: "Computational Biomechanics for Medicine XXI (CBM XXI), MICCAI 2026 workshop"
+  doi: "10.48550/arXiv.2607.12157"
   url: "https://arxiv.org/abs/2607.12157"
   identifiers:
-    - type: other
-      value: "arXiv:2607.12157"
-      description: "arXiv preprint"
+    - type: doi
+      value: "10.48550/arXiv.2607.12157"
+      description: "arXiv DOI of the paper"
+    - type: url
+      value: "https://arxiv.org/abs/2607.12157"
+      description: "arXiv abstract page (arXiv:2607.12157)"
   notes: >-
-    Accepted at CBM XXI (MICCAI 2026). The proceedings DOI will be added when it is issued.
+    Accepted at CBM XXI (MICCAI 2026); preprint arXiv:2607.12157. The proceedings DOI will be
+    added when it is issued.
   authors:
     - family-names: Shahsavari
       given-names: Davood

@@ -26,7 +26,7 @@ measure, on which `0` is a regular tetrahedron and `1` a degenerate one.
 > **Status.** Accepted at the MICCAI 2026 workshop *Computational Biomechanics for Medicine* (CBM XXI),
 > Strasbourg, 27 September 2026: *CORTET: Robust generation of simulation-ready tetrahedral meshes of the
 > fetal cerebral cortex*, preprint [arXiv:2607.12157](https://arxiv.org/abs/2607.12157). Please cite the
-> paper; `CITATION.cff` (or *Cite this repository* on GitHub) has the entry, and the proceedings DOI will
+> paper: see [Citation](#citation) below, or *Cite this repository* on GitHub. The proceedings DOI will
 > be added when it is issued.
 
 **`docs/PAPER_MAP.md` maps every claim the paper makes onto the file here that backs it**, and marks
@@ -388,6 +388,32 @@ each row. There is no separate experiment harness to run:
 
 Each stage appends a small CSV summary, so a batch is a loop over subjects and a concatenation of
 those files.
+
+## Citation
+
+If you use CORTET, please cite the paper
+([arXiv:2607.12157](https://arxiv.org/abs/2607.12157), DOI
+[10.48550/arXiv.2607.12157](https://doi.org/10.48550/arXiv.2607.12157)):
+
+> D. Shahsavari, I. Grigorescu, K. R. Long, J. Xiao, K. Liang, N. Baena, A. Saboo, S. N. B. Masui, Y. Guo,
+> V. Kyriakopoulou, A. Uus, M. J. Bishop and E. C. Robinson. *CORTET: Robust generation of simulation-ready
+> tetrahedral meshes of the fetal cerebral cortex.* Computational Biomechanics for Medicine XXI (CBM XXI),
+> MICCAI 2026 workshop, Strasbourg, 2026. arXiv:2607.12157.
+
+```bibtex
+@inproceedings{shahsavari2026cortet,
+  title         = {{CORTET}: Robust generation of simulation-ready tetrahedral meshes of the fetal cerebral cortex},
+  author        = {Shahsavari, Davood and Grigorescu, Irina and Long, Katherine R. and Xiao, Jiaxin and
+                   Liang, Kaili and Baena, Nashira and Saboo, Aakash and Masui, Saga N. B. and Guo, Yourong and
+                   Kyriakopoulou, Vanessa and Uus, Alena and Bishop, Martin J. and Robinson, Emma C.},
+  booktitle     = {Computational Biomechanics for Medicine XXI (CBM XXI), MICCAI 2026 workshop},
+  year          = {2026},
+  eprint        = {2607.12157},
+  archivePrefix = {arXiv},
+  doi           = {10.48550/arXiv.2607.12157},
+  url           = {https://arxiv.org/abs/2607.12157}
+}
+```
 
 ## Acknowledgements and upstream tools
 
