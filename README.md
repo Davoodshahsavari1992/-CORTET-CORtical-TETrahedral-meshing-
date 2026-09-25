@@ -404,12 +404,15 @@ folding patterns*, Scientific Reports 11, 7686. The reference implementation is 
 
 Developed and maintained by:
 
-**Davood Shahsavari**, PhD (University of Glasgow, UK)  
+**Davood Shahsavari** ([@Davoodshahsavari1992](https://github.com/Davoodshahsavari1992)), PhD (University of Glasgow, UK)  
 Research Associate, Developmental Neurobiology  
 Institute of Psychiatry, Psychology & Neuroscience (IoPPN)  
 King's College London | School of Biomedical Engineering & Imaging Sciences  
 5th Floor, Becket House, 1 Lambeth Palace Rd, London SE1 7EU  
 <davood.shahsavari@kcl.ac.uk>
+
+with **Irina Grigorescu** ([@irinagrigorescu](https://github.com/irinagrigorescu)) and **Emma C. Robinson**
+([@ecr05](https://github.com/ecr05)), King's College London.
 
 Part of the **Gen2020** fetal brain-folding programme, in the MeTrICS Lab (PI Dr Emma Robinson).
 
