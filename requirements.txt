@@ -30,10 +30,6 @@ gmsh==4.15.1
 # Without --no-deps it pulls numpy 2.x, which clobbers the numpy 1.24.4 pinned
 # above and breaks scipy 1.9. Its only real dependency is numpy.
 
-# TetGen comparison (optional; run/04 only)
-tetgen==0.8.2
-pyvista==0.46.5
-
 # ---------------------------------------------------------------------------
 # NOT INSTALLABLE BY PIP
 #

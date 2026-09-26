@@ -67,8 +67,8 @@ says which stage reproduces which part of the paper.
 | Full pipeline: not one element above `q = 0.6`, in any subject | `pooled_hist.csv` — 0 above threshold; highest occupied bin ends at 0.565 |
 | Full pipeline `q_max` median 0.508, range 0.462–0.561 | `cohort_quality_194.csv` — median 0.5083, range 0.4621–0.5613 |
 | Mean quality varies by less than 0.01 across configurations | `cohort_quality_194.csv` — `q̄` spans 0.1280–0.1294 |
-| TetGen out-of-the-box: `q̄ = 0.242`, `q_max = 0.996`, median 15,955 elements over threshold | produced by the ablation driver; **per-subject TetGen rows are not shipped** |
-| TetGen given the SAME S3 + S4 stages still does not reach the target (answers R1.5) | `run/04_tetgen_baseline.py --with-s3s4`; `q_max` reported to stay ≈0.98–1.00 |
+| TetGen out-of-the-box: `q̄ = 0.242`, `q_max = 0.996`, median 15,955 elements over threshold | measured with TetGen `pq1.2/20Y` on the same surfaces; the comparison scripts and per-subject TetGen rows are not included |
+| TetGen given the SAME S3 + S4 stages still does not reach the target (answers R1.5) | TetGen output run through S3 + S4 (script not included); `q_max` reported to stay ≈0.98–1.00 |
 | Tallinen 22-week mesh: `q̄ = 0.162`, `q_max = 0.811`, 15 elements over threshold | third-party mesh, measured with the same tool; not redistributable |
 
 ## Results §4.2 — Cohort and development (Fig. 3)

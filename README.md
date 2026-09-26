@@ -88,8 +88,6 @@ run/                                        the numbered entry points -- start h
   00_check_environment.py                   prove the toolchain works before trusting a number
   01_smooth_surface.py                      pre-mesh surface smoothing
   02_generate_mesh.py                       full CORTET, without post-mesh smoothing
-  03_ablation.py                            CGAL only / +Gmsh / Full  (Table 1)
-  04_tetgen_baseline.py                     TetGen comparison, optionally through our S3+S4
   05_postmesh_smooth_and_clean.py           boundary smoothing + the required re-clean
   06_export_braingrowth.py                  solver-ready export, conventions verified
 cortet/
@@ -99,9 +97,6 @@ cortet/
   generation/generate_tetrahedral_mesh.py   Stages 1 to 6: surface in, solver-ready mesh out
   export/                                   AFTER meshing: hand the mesh to a different solver
     export_mesh_formats.py                  Abaqus, FEBio, FEniCS, VTK, Gmsh, CARP, via meshio
-  tetgen/                                   the TetGen comparison workers
-    tetgen_generate.py                      TetGen generation, writes CARP
-    tetgen_s3s4.py                          our S3 + S4 applied to TetGen output
   postmesh/                                 AFTER meshing: optional boundary smoothing
     run_full_postmesh_pipeline.py           the entry point: smooth, re-clean, finalise, verify
     smooth_mesh_boundary_surfacepreserving.py   pymeshlab surface-preserving Laplacian
@@ -160,7 +155,7 @@ exact versions used during development.
 
 # Running it, stage by stage
 
-`run/` holds seven numbered entry points. Each does **one** thing, prints what it did, writes a small
+`run/` holds five numbered entry points. Each does **one** thing, prints what it did, writes a small
 CSV summary, and can be run and checked on its own. Run them in order the first time; after that use
 whichever you need.
 
@@ -175,8 +170,6 @@ measurement incidents came from exactly that.
 | `00` | `check_environment.py` | proves the toolchain works before you trust any number | — |
 | `01` | `smooth_surface.py` | pre-mesh surface smoothing (§3.5) | pymeshlab |
 | `02` | `generate_mesh.py` | full CORTET, S1–S6, **without** post-mesh smoothing | pygalmesh, gmsh, meshtool |
-| `03` | `ablation.py` | CGAL only / +Gmsh / Full — the paper's Table 1 | as 02 |
-| `04` | `tetgen_baseline.py` | TetGen on the same surface, and optionally through our S3+S4 | tetgen, pyvista |
 | `05` | `postmesh_smooth_and_clean.py` | boundary smoothing + the re-clean it requires (§4.4) | as 02, + wb_command for `--method wb` |
 | `06` | `export_braingrowth.py` | solver-ready export, every convention applied **and verified** | meshtool (optional) |
 
@@ -225,41 +218,6 @@ right stage for most target solvers. Defaults to `h = 0.6` mm, the paper's defau
 It measures the result and **passes or fails it** against `q_max < 0.6`. Where it recognises the
 subject and resolution it also prints the published values side by side, which makes the run a
 reproduction check rather than just a run.
-
-### 03 — the stage ablation
-
-```bash
-python3 run/03_ablation.py --surface sub-X_sp30.surf.gii \
-    --out-dir ablation/ --with-tetgen
-```
-
-Meshes the same surface three times — CGAL only, + Gmsh, full — and measures all three identically.
-This is Table 1, and it is the paper's central argument in one command: the mean barely moves
-(0.135 → 0.129) while the count of solver-breaking elements collapses from ~1.7 × 10⁵ to zero. A mesh
-can have excellent mean quality and be unusable, and the mean will not tell you.
-
-Reporting that count needs `meshtool`'s per-element dump; the summary line alone cannot produce it.
-Three full meshing runs per subject, so start with one young subject at the default resolution.
-Meshes are measured and deleted as it goes, so disk never holds more than one.
-
-### 04 — the TetGen baseline
-
-```bash
-python3 run/04_tetgen_baseline.py --surface sub-X_sp30.surf.gii --out-dir ablation/
-python3 run/04_tetgen_baseline.py --surface sub-X_sp30.surf.gii --out-dir ablation/ --with-s3s4
-```
-
-TetGen out-of-the-box on the same surface, measured the same way: the controlled comparison that
-isolates the generator from the geometry. Switches are `pq1.2/20Y` on a PyVista surface prepared with
-consistent, auto-oriented normals — the configuration behind the published baseline. Changing them
-breaks comparability, and the script says so.
-
-`--with-s3s4` goes further and pushes TetGen's output through **our own** S3 and S4, asking whether
-the optimisation stages rather than the choice of tetrahedraliser carry the result.
-
-> If a quality value ever comes back outside `[0, 1]`, the input is malformed rather than merely poor.
-> That is not hypothetical: TetGen run without the normal-consistency prep returned `q_max = 2.0` here.
-> `cortet/common.py` now flags it explicitly.
 
 ### 05 — post-mesh smoothing and re-cleaning
 
@@ -356,7 +314,7 @@ nothing. Run it on any mesh that reached your solver by a route other than
 
 ## Verification status
 
-Every script here compiles, all thirteen module `--selftest`s pass, and the pipeline has been run at
+Every script here compiles, all eleven module `--selftest`s pass, and the pipeline has been run at
 cohort scale on 194 subjects.
 
 The smoothing figures quoted above were measured at `h = 0.4` mm on one subject with `--method wb`.
@@ -372,22 +330,9 @@ Both smoothing methods therefore have real-subject evidence behind them. `--meth
 published Section 4.4 figures; `--method surfacepreserving` is the default because it needs no
 external tool.
 
-## Reproducing the published tables
+## Results
 
-Everything in `results/` comes from the numbered stages, at the resolutions and inputs recorded in
-each row. There is no separate experiment harness to run:
-
-| To reproduce | Run |
-|---|---|
-| `cohort_quality_194.csv` | `run/02` per subject at `h = 0.6` |
-| `pooled_hist.csv`, Table 1 | `run/03` per subject |
-| the TetGen row of Table 1 | `run/04`, and `run/04 --with-s3s4` for the S3+S4 question |
-| `table2_h_resolution_study.csv` | `run/02` per subject at `--cell-size 0.4 / 0.6 / 0.8` |
-| `table2_full_matrix.csv` | the same, then `run/05` on each output |
-| Section 4.4 | `run/05 --method wb` |
-
-Each stage appends a small CSV summary, so a batch is a loop over subjects and a concatenation of
-those files.
+The measured results behind the paper's tables are in `results/`; `results/README.md` says what each file is and how it was produced.
 
 ## Citation
 

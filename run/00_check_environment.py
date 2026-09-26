@@ -35,18 +35,14 @@ PYTHON_DEPS = [
     ("trimesh",   "trimesh",   True,  "surface repair, nearest-surface queries"),
     ("meshio",    "meshio",    True,  "format conversion, stage 06 export"),
     ("pygalmesh", "pygalmesh", True,  "stage 02/03: CGAL tetrahedralisation"),
-    ("gmsh",      "gmsh",      False, "stage 02/03: S3 Relocate3D smoothing"),
+    ("gmsh",      "gmsh",      False, "stage 02: S3 Relocate3D smoothing"),
     ("pymeshlab", "pymeshlab", False, "stage 01/05: surface-preserving smoothing"),
-    ("tetgen",    "tetgen",    False, "stage 04: TetGen baseline"),
-    ("pyvista",   "pyvista",   False, "stage 04: TetGen baseline; rendering"),
 ]
 
 STAGE_SCRIPTS = [
     "00_check_environment.py",
     "01_smooth_surface.py",
     "02_generate_mesh.py",
-    "03_ablation.py",
-    "04_tetgen_baseline.py",
     "05_postmesh_smooth_and_clean.py",
     "06_export_braingrowth.py",
 ]
