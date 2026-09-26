@@ -440,7 +440,8 @@ King's College London | School of Biomedical Engineering & Imaging Sciences
 with **Irina Grigorescu** ([@irinagrigorescu](https://github.com/irinagrigorescu)) and **Emma C. Robinson**
 ([@ecr05](https://github.com/ecr05)), King's College London.
 
-Part of the **Gen2020** fetal brain-folding programme, in the MeTrICS Lab (PI Dr Emma Robinson).
+Part of the **Gen2020** fetal brain-folding programme at King's College London (PIs Dr Emma Robinson,
+MeTrICS Lab, and Dr Katie Long, Centre for Developmental Neurobiology).
 
 The accompanying paper has thirteen authors; the full list, in the order it appears there, is in
 `CITATION.cff`. Please cite the paper rather than this repository alone — see *Status* at the top.
