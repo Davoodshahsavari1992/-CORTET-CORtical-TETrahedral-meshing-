@@ -9,6 +9,12 @@
 # floated because mesh generation is sensitive to the toolchain in ways that are
 # easy to miss; the reproducibility note at the bottom gives the measured size of
 # that sensitivity.
+#
+# PYTHON VERSION: 3.9 or 3.10. The pinned numpy 1.24.4 and scipy 1.9.1 have no
+# builds for Python 3.11 or later and do not compile there, so "pip install -r
+# requirements.txt" fails on a default 2026 Python (3.12-3.14). Make a 3.10
+# environment first (python3.10 -m venv, or conda create -n cortet python=3.10).
+# The README's Installation section has the verified routes for Linux and macOS.
 # ---------------------------------------------------------------------------
 
 # Core

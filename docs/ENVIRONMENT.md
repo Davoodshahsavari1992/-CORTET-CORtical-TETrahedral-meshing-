@@ -129,6 +129,21 @@ That measures a single regular tetrahedron, whose quality must come back near 0.
 `meshtool` can exit 0 and emit wrong output outside the correct module
 environment, so checking the binary exists is not enough.
 
+## Verified install routes (October 2026)
+
+Every route below was run from scratch on a clean machine or container with the repository as published.
+
+| Machine, Python | Install route | Outcome |
+|---|---|---|
+| Ubuntu 22.04, Python 3.10 | the README route: system Eigen/GMP/MPFR/Boost headers, CGAL 5.6.1 headers in `~/.local/include`, `pip install -r requirements.txt`, meshtool `f40d370` | installs; `run/00` clean; 11 of 11 self-tests pass |
+| macOS (Apple Silicon), Python 3.10 | conda-forge `python=3.10 eigen=3.4 gmp mpfr libboost-headers=1.83`, CGAL 5.6.1 headers, **Homebrew GCC 16** with `-Wno-template-body` (README, macOS block) | installs; `run/00` clean; 11 of 11 self-tests pass; example subject at h = 0.6: 59,165 nodes, 326,138 tets, worst 0.499 |
+| Ubuntu 24.04, default Python 3.12 | `pip install -r requirements.txt` | fails: `numpy 1.24.4` has no 3.12 build (`No module named 'distutils'`) |
+| macOS, Python 3.11 to 3.14 | `pip install -r requirements.txt` | fails: `scipy 1.9.1` (3.11) / `numpy 1.24.4` (3.12+) have no builds and do not compile |
+| macOS, Python 3.9 or 3.10, Apple Clang | `pip install -r requirements.txt` | fails: Apple Clang 21 rejects the CGAL 5.6.1 headers; with CGAL 5.6.3 instead, `pygalmesh 0.10.7` fails (`call to 'lloyd' is ambiguous`) |
+
+So: Python 3.9 or 3.10, CGAL 5.6.1, and on a Mac a GCC compiler. The pins are kept as they are because
+they are the environment of the published numbers.
+
 ## Reproducing on a workstation, and how closely it matches
 
 The whole pipeline builds and runs off-cluster. On Ubuntu 22.04 with CGAL 5.6.1 headers in

@@ -135,18 +135,55 @@ implementation of the BrainGrowth model of Wang et al. (2021); the reference imp
 
 ## Installation
 
+**Python 3.9 or 3.10.** The pinned `numpy 1.24.4` and `scipy 1.9.1` (the versions the published results
+were produced with) have no builds for Python 3.11 or later and do not compile there, so the install
+fails on a default 2026 Python (3.12 to 3.14). Make a 3.10 environment first.
+
 ```bash
+python3.10 -m venv cortet-env && source cortet-env/bin/activate   # or: conda create -n cortet python=3.10
 pip install -r requirements.txt
+pip install --no-deps pymeshlab==2025.7      # stage 01 only; --no-deps keeps numpy 1.24.4 in place
 ```
+
+`pygalmesh` is compiled during that install against the **CGAL 5.6.1** headers, which are header-only:
+download the release, put `CGAL-5.6.1/include/CGAL` under `~/.local/include`, and
+`export CPATH="$HOME/.local/include:$CPATH"` (the exact lines are in `requirements.txt`). It also needs the
+Eigen, GMP, MPFR and Boost headers. Two routes were verified from scratch in October 2026:
+
+**Linux (Ubuntu 22.04, the reference workstation OS).** System packages `build-essential libeigen3-dev
+libgmp-dev libmpfr-dev libboost-dev`, a Python 3.10 venv, the CGAL headers as above, then the two `pip`
+lines. `run/00` reports a clean environment and all 11 module self-tests pass.
+
+**macOS (Apple Silicon).** Apple's Clang (21 and later) rejects the CGAL 5.6.1 headers, and CGAL 5.6.3
+breaks `pygalmesh 0.10.7` in another way (`call to 'lloyd' is ambiguous`), so keep CGAL 5.6.1 and compile
+`pygalmesh` with Homebrew GCC:
+
+```bash
+brew install gcc                                                   # gcc-16 at the time of writing
+conda create -n cortet -c conda-forge python=3.10 eigen=3.4 gmp mpfr libboost-headers=1.83
+conda activate cortet
+export CPATH="$HOME/.local/include:$CONDA_PREFIX/include/eigen3:$CONDA_PREFIX/include"
+export LIBRARY_PATH="$CONDA_PREFIX/lib"
+CC=gcc-16 CXX=g++-16 CFLAGS=-Wno-template-body CXXFLAGS=-Wno-template-body pip install -r requirements.txt
+pip install --no-deps pymeshlab==2025.7
+```
+
+(`-Wno-template-body`: GCC 15 and later reject a construct inside the CGAL 5.6.1 headers; the flag turns
+it back into a warning.) Verified: every pin installs, `run/00` is clean, 11 of 11 self-tests pass, and the
+example subject at h = 0.6 mm gives 59,165 nodes, 326,138 tetrahedra and a worst element of 0.499,
+against the published 59,174 / 326,083 / 0.462 — the same conclusions, not the same digits, for the
+reason given in the reproducibility note of `requirements.txt`.
 
 Two dependencies are **not** installable through pip and must be provided separately:
 
-- **`meshtool`** for Stage 4 quality cleaning. Expected at `~/meshtool/meshtool` by default; override
-  with `--meshtool`.
+- **`meshtool`** (<https://bitbucket.org/aneic/meshtool>, commit `f40d370`:
+  `git clone https://bitbucket.org/aneic/meshtool.git && cd meshtool && git checkout f40d370 && make`)
+  for Stage 4 quality cleaning and every quality measurement. Expected at `~/meshtool/meshtool` by
+  default; override with `--meshtool`. The commit matters: see `requirements.txt`.
 - **`wb_command`** (Connectome Workbench) for surface resampling and the Workbench smoothing method.
 
-`pygalmesh` must be built against the CGAL headers on your system. `docs/ENVIRONMENT.md` records the
-exact versions used during development.
+`docs/ENVIRONMENT.md` records the exact versions used during development, on the cluster and in the two
+verified workstation routes.
 
 > **Read `docs/ENVIRONMENT.md` before the first run.** `meshtool` can exit with status 0 and produce
 > empty or wrong output when run outside the correct environment, with no error pointing at the cause.

@@ -8,7 +8,7 @@ keeps its own licence, and you obtain it from its own distributor:
 |---|---|---|
 | CGAL (via pygalmesh) | GPLv3+ / commercial | <https://www.cgal.org> |
 | Gmsh | GPLv2+ | <https://gmsh.info> |
-| meshtool | Apache-2.0 | <https://github.com/aureliobarbosa/meshtool> |
+| meshtool | Apache-2.0 | <https://bitbucket.org/aneic/meshtool> |
 | TetGen | AGPLv3 / commercial | <https://wias-berlin.de/software/tetgen> |
 | Connectome Workbench | GPLv2 | <https://humanconnectome.org> |
 | PyMeshLab | GPLv3 | <https://pymeshlab.readthedocs.io> |
